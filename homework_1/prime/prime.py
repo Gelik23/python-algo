@@ -29,7 +29,7 @@ def count_primes(limit):
     sieve[1] = 0
 
     for number in sieve:
-        if number > 1:
+        if number != 0:
             for multiple in range(number * 2, limit, number):
                 sieve[multiple] = 0
 
