@@ -33,11 +33,12 @@ def count_primes(limit):
             for multiple in range(number * 2, limit, number):
                 sieve[multiple] = 0
 
-    primes = []
+    
+    count = 0
     for number in sieve:
         if number != 0:
-            primes.append(number)
-    return len(primes)
+            count += 1
+    return count
 
 
 if __name__ == "__main__":
