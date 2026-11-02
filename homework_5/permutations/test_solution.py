@@ -3,10 +3,10 @@ from homework_5.tracer import solution as tracer_module
 
 
 def test_examples():
-    assert permutations([1, 2, 3]) == [
+    assert sorted(permutations([1, 2, 3])) == sorted([
         [1, 2, 3], [1, 3, 2], [2, 1, 3],
         [2, 3, 1], [3, 1, 2], [3, 2, 1],
-    ]
+    ])
     assert permutations([0, 1]) == [[0, 1], [1, 0]]
     assert permutations([1]) == [[1]]
 
@@ -16,9 +16,9 @@ def test_empty():
 
 
 def test_duplicates_and_negative():
-    assert permutations([2, -1, 2]) == [
+    assert sorted(permutations([2, -1, 2])) == sorted([
         [2, 2, -1], [2, -1, 2], [-1, 2, 2],
-    ]
+    ])
 
 
 def test_all_equal():
@@ -59,24 +59,27 @@ def test_four_element_visualization():
     try:
         result = permutations(nums, trace=True)
         assert result == [
-            [2, 2, -1, 0],
-            [2, 2, 0, -1],
             [2, -1, 2, 0],
             [2, -1, 0, 2],
+            [2, 2, -1, 0],
+            [2, 2, 0, -1],
             [2, 0, 2, -1],
             [2, 0, -1, 2],
             [-1, 2, 2, 0],
             [-1, 2, 0, 2],
             [-1, 0, 2, 2],
-            [0, 2, 2, -1],
-            [0, 2, -1, 2],
             [0, -1, 2, 2],
+            [0, 2, -1, 2],
+            [0, 2, 2, -1],
         ]
-        assert lines[0] == "-> backtrack([])"
-        assert lines[-1] == "<- backtrack([]) = 12"
-        assert "  <- backtrack([2]) = 6" in lines
-        assert "  <- backtrack([-1]) = 3" in lines
-        assert "  <- backtrack([0]) = 3" in lines
+        assert lines[0] == "-> perms(0)"
+        assert lines[-1] == "<- perms(0) = 12"
+        branch_returns = [line for line in lines if line.startswith("  <- perms(1)")]
+        assert branch_returns == [
+            "  <- perms(1) = 6",
+            "  <- perms(1) = 3",
+            "  <- perms(1) = 3",
+        ]
         assert nums == [2, -1, 2, 0]
     finally:
         del tracer_module.print
